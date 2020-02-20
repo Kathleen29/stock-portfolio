@@ -1,0 +1,23 @@
+{
+  "name": "stock-portfolio",
+  "version": "1.0.0",
+  "description": "a stock portfolio app",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kathleen29/stock-portfolio.git"
+  },
+  "author": "kathleen29",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kathleen29/stock-portfolio/issues"
+  },
+  "homepage": "https://github.com/Kathleen29/stock-portfolio#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "express": "^4.17.1"
+  }
+}
