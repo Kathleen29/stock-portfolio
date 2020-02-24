@@ -4,7 +4,10 @@
   "description": "a stock portfolio app",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/index.js"
+    "build": "webpack -d",
+    "build-dev": "webpack -d --watch",
+    "start": "nodemon server/index.js",
+    "test": "jest --detectOpenHandles --forceExit"
   },
   "repository": {
     "type": "git",
@@ -18,6 +21,18 @@
   "homepage": "https://github.com/Kathleen29/stock-portfolio#readme",
   "dependencies": {
     "axios": "^0.19.2",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "jest": "^25.1.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "supertest": "^4.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-react": "^7.8.3",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
   }
 }
