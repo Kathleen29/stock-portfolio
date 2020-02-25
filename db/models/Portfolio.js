@@ -1,12 +1,9 @@
 const db = require('../index.js');
 const Sequelize = require('sequelize');
+const Users = require('./Users.js');
 
 // creates table to store data for user portfolios
 const Portfolio = db.define('portfolio', {
-  user_id: {
-    type: Sequelize.INTEGER,
-    allowNull: false
-  },
   ticker: {
     type: Sequelize.STRING(32),
     allowNull: false
@@ -16,5 +13,8 @@ const Portfolio = db.define('portfolio', {
     allowNull: false
   }
 });
+
+// adds user id as the foreign key in the transactions table
+Portfolio.belongsTo(Users, { foreignKey: 'user_id' });
 
 module.exports = Portfolio;

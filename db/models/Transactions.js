@@ -1,12 +1,9 @@
 const db = require('../index.js');
 const Sequelize = require('sequelize');
+const Users = require('./Users.js');
 
 // creates table to store all user transactions
 const Transactions = db.define('transactions', {
-  user_id: {
-    type: Sequelize.INTEGER,
-    allowNull: false
-  },
   trans_type: {
     type: Sequelize.STRING(10),
     allowNull: false
@@ -28,5 +25,8 @@ const Transactions = db.define('transactions', {
     allowNull: false
   }
 });
+
+// adds user id as the foreign key in the transactions table
+Transactions.belongsTo(Users, { foreignKey: 'user_id' });
 
 module.exports = Transactions;

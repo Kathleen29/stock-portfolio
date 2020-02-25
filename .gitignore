@@ -1,2 +1,8 @@
+# Mac Files
+.DS_Store
+
+# npm
 node_modules
+
+# API Key
 config.js
