@@ -17,7 +17,7 @@ router.get('/buy/:ticker/:qty', async(req, res) => {
 		});
 	}
 	catch {
-		res.send(404);
+		res.sendStatus(404);
 	}
 });
 
