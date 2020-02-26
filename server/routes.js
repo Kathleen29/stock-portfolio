@@ -5,8 +5,15 @@ const models = require('./db/models');
 const router = require('express').Router();
 
 // return a user's portfolio if signed in
-router.get('/portfolio/:user', (req, res) => {
-	res.sendStatus(200);
+router.get('/portfolio/:user', async (req, res) => {
+	try {
+		let portfolio = await models.getPortfolio(req.params.user);
+		res.send( { portfolio: portfolio });
+	}
+	catch(err) {
+		console.log(err)
+		res.sendStatus(400);
+	}
 });
 
 // fetches quote for a given symbol from IEX API
@@ -23,15 +30,22 @@ router.get('/quote/:ticker', async (req, res) => {
 // adds a transaction to the database
 router.post('/buy', async (req, res) => {
 	try {
-		// updates transactions, portfolio, and user's balance
-		let result = [
-			await models.buyStock(req.body),
-			await models.addToPortfolio(req.body),
-			await models.updateBalance(req.body)
-		];
-		res.sendStatus(201);
+		let totalCost = req.body.shares * req.body.quote;
+		if(models.checkBalance(req.body.user_id, totalCost)) {
+			// updates transactions, portfolio, and user's balance
+			let result = [
+				await models.buyStock(req.body, totalCost),
+				await models.addToPortfolio(req.body),
+				await models.updateBalance(req.body)
+			];
+			res.sendStatus(201);
+		}
+		else {
+			res.sendStatus(400);
+		}
 	}
 	catch(err) {
+		console.log(err);
 		res.sendStatus(404);
 	}
 });
@@ -66,6 +80,7 @@ router.post('/signup', async (req, res) => {
 		res.sendStatus(201);
 	}
 	catch(err) {
+		console.log(err);
 		res.sendStatus(404);
 	}
 });

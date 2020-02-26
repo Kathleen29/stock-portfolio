@@ -1,50 +1,44 @@
 const db  = require('./index.js');
 const hashUtils = require('./hashUtils');
-const Portfolio = require('./models/Portfolio');
+const Portfolios = require('./models/Portfolios');
 const Transactions = require('./models/Transactions');
 const Users = require('./models/Users');
 
-// creates portfolio, transactions, and user tables if not exists
+// creates portfolios, transactions, and user tables if not exists
 db.sync()
 	.then(() => console.log('Tables created!'))
 	.catch(err => console.log(err));
 
 // database entry for a transaction
-const buyStock = (data) => {
-	let totalCost = data.shares * data.quote;
-	// check if a user can afford total transaction cost
-	if(totalCost <= getBalance(data.user_id)) {
-		return Transactions.create({
-			trans_type: 'buy',
-			ticker: data.ticker,
-			shares: data.shares,
-			price: data.quote,
-			total: totalCost,
-			user_id: data.user_id
-		});
-	} else {
-		return false;
-	}
+const buyStock = (data, total) => {
+	return Transactions.create({
+		trans_type: 'buy',
+		ticker: data.ticker,
+		shares: data.shares,
+		price: data.quote,
+		total: total,
+		user_id: data.user_id
+	});
 };
 
 // database entry for a portfolio
 const addToPortfolio = (data) => {
 	// check if user already has stock
-	return Portfolio.findOne( { where: {
+	return Portfolios.findOne( { where: {
 		user_id: data.user_id,
 		ticker: data.ticker
 	}})
 		.then(current => {
 			// if user does not have stock, create new entry
 			if(!current) {
-				return Portfolio.create({
+				return Portfolios.create({
 					ticker: data.ticker,
 					shares: data.shares,
 					user_id: data.user_id
 				});
 			} else {
 				// if user already has stock, update number of shares
-				return current.update({ shares: current.shares + data.shares });
+				return current.update({ shares: Number(current.shares) + Number(data.shares) });
 			}
 		})
 };
@@ -65,6 +59,7 @@ const createUser = (data) => {
 	let newSalt = hashUtils.createSalt();
 	// default cash in and balance for new users is $5000.00
 	return Users.create({
+		name: data.name,
 		email: data.email,
 		hash: hashUtils.createHash(data.password, newSalt),
 		salt:	newSalt,
@@ -80,15 +75,23 @@ const verifyEmail = (email) => {
 
 // looks up portfolio given a user id
 const getPortfolio = (userId) => {
-	return Portfolio.findOne({ where: { user_id: userId }});
+	return Portfolios.findAll({ where: { user_id: userId }});
 };
 
 const getCashIn = (userId) => {
 	return User.findOne({ where: { user_id: userId } });
 };
 
-const getBalance = (userId) => {
-	return Users.findOne({ where: { user_id: userId} });
+const checkBalance = (userId, total) => {
+	// check if a user can afford total transaction cost{
+	return Users.findOne({ where: { user_id: userId} })
+		.then((res) => {
+			if(res.balance >= total) {
+				return true;
+			} else {
+				return false;
+			}
+		});
 };
 
 const getTransactionTotal = (userId) => {
@@ -107,5 +110,7 @@ module.exports = {
 	addToPortfolio,
 	updateBalance,
 	createUser,
-	verifyEmail
+	verifyEmail,
+	checkBalance,
+	getPortfolio
 };
