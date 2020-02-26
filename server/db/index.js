@@ -1,11 +1,14 @@
 const mysql = require('mysql');
 const Sequelize = require('sequelize');
 
+// mysql://b0404b70907b7e:f6cb7138@us-cdbr-iron-east-04.cleardb.net/heroku_e319ed1fe746801?reconnect=true
+
+// host: us-cdbr-iron-east-04.cleardb.net
+// user: b0404b70907b7e
+// pass: f6cb7138
+
 // connects to stock_portfolio database
-const db = new Sequelize('stock_portfolio', 'root', '', {
-  dialect: 'mysql',
-  host: 'localhost'
-});
+const db = new Sequelize('mysql://b0404b70907b7e:f6cb7138@us-cdbr-iron-east-04.cleardb.net/heroku_e319ed1fe746801?reconnect=true');
 
 db.authenticate()
   .then(() => console.log('Connected to the database'))
