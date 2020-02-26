@@ -27,9 +27,8 @@ class App extends React.Component {
   getPortfolio(user) {
     axios.get('/portfolio/' + user)
       .then((res) => {
-        console.log(res.data);
         this.setState({
-          portfolio: res.data
+          portfolio: res.data.portfolio
         })
       })
       .catch((err) => {
