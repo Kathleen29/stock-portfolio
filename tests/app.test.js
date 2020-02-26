@@ -16,14 +16,42 @@ describe('GET /quote/:ticker', () => {
 });
 
 // tests route to look up stock quote
-describe('POST /:transaction', () => {
+describe('POST /buy', () => {
   afterAll(async () => {
     await new Promise(resolve => setTimeout(() => resolve(), 500));
   });
 
   it('It should add a transaction to the database', async () => {
       // adds a transaction to the database
-      let response = await request(app).post('/buy').send({ "ticker": "SPOT", "shares": 3, "quote": 141.80 });
+      let response = await request(app).post('/buy').send({ "ticker": "SPOT", "shares": 3, "quote": 141.80, "user_id": 1 });
       expect(response.statusCode).toBe(201);
   })
 });
+
+// tests sign-up
+describe('POST /signup', () => {
+  afterAll(async () => {
+    await new Promise(resolve => setTimeout(() => resolve(), 500));
+  });
+
+  it('It should add a new user to the database', async () => {
+      // adds a transaction to the database
+      let randomEmail = Math.floor(Math.random() * 1000) + '@example.com';
+      let response = await request(app).post('/signup').send({ "email": randomEmail, "password": "testing123" });
+      expect(response.statusCode).toBe(201);
+  })
+});
+
+// tests login
+describe('POST /login', () => {
+  afterAll(async () => {
+    await new Promise(resolve => setTimeout(() => resolve(), 500));
+  });
+
+  it('It should verify a submitted email and password', async () => {
+      // adds a transaction to the database
+      let response = await request(app).post('/login').send({ "email": "test@example.com", "password": "testing123" });
+      expect(response.statusCode).toBe(200);
+  })
+});
+

@@ -4,6 +4,7 @@ const hashUtils = require('./db/hashUtils');
 const models = require('./db/models');
 const router = require('express').Router();
 
+// return a user's portfolio if signed in
 router.get('/', (req, res) => {
 	res.sendStatus(200);
 });
@@ -22,6 +23,7 @@ router.get('/quote/:ticker', async (req, res) => {
 // adds a transaction to the database
 router.post('/buy', async (req, res) => {
 	try {
+		// updates transactions, portfolio, and user's balance
 		let result = [
 			await models.buyStock(req.body),
 			await models.addToPortfolio(req.body),
@@ -37,14 +39,15 @@ router.post('/buy', async (req, res) => {
 // verifies login information provided
 router.post('/login', async (req, res) => {
 	try {
-		let login = await models.verifyLogin(req.body.email);
-
+		let login = await models.verifyEmail(req.body.email);
+		// if email not found...
 		if(!login) {
-			return 'invalid email';
-		} else if (!hashUtils.compareHash(data.password, login.hash, login.salt)) {
-			return 'invalid password';
+			res.send('invalid email');
+			// checks if password provided matches hashed password in db
+		} else if (!hashUtils.compareHash(req.body.password, login.hash, login.salt)) {
+			res.send('invalid password');
 		} else {
-			return 'success';
+			res.send('success');
 		}
 	}
 	catch(err) {
@@ -56,6 +59,7 @@ router.post('/login', async (req, res) => {
 router.post('/signup', async (req, res) => {
 	try {
 		let result = await models.createUser(req.body);
+		// if not inserted into the db, email already exists
 		if(!result) {
 			res.send('Email already exists');
 		}

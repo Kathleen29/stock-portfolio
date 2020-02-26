@@ -1,20 +1,29 @@
+import axios from 'axios';
 import React from 'react';
 
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
+      user: '',
+      loggedIn: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit() {
     // validate the input before creating user session
-    this.setState({
-      email: event.target.value,
-    });
-  }
+    axios.post('/login')
+      .then((userId) => {
+        this.setState({
+          user: userId,
+          loggedIn: true
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  };
 
   render() {
     return (
