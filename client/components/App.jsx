@@ -8,22 +8,33 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: '',
-      loggedIn: false
+      user: null,
+      loggedIn: false,
+      portfolio: null
     };
     this.handleUserSignedIn = this.handleUserSignedIn.bind(this);
   }
 
   // set user id and logged in to 'true' for authenticated users
   handleUserSignedIn(userId) {
+    this.getPortfolio(userId);
     this.setState({
       user: userId,
-      loggedIn: true
+      loggedIn: true,
     })
   };
 
-  getPortfolio() {
-    axios.get('/portfolio/' + this.state.user);
+  getPortfolio(user) {
+    axios.get('/portfolio/' + user)
+      .then((res) => {
+        console.log(res.data);
+        this.setState({
+          portfolio: res.data
+        })
+      })
+      .catch((err) => {
+        console.log('Portfolio Empty');
+      })
   };
 
   render() {
@@ -32,7 +43,7 @@ class App extends React.Component {
         { // if a user is signed in, render portfolio
           // else, render sign-in form
           (this.state.loggedIn)
-          ? <Portfolio getPortfolio={this.getPortfolio}/>
+          ? <Portfolio portfolio={this.state.portfolio}/>
           : <SignIn handleUserSignedIn={this.handleUserSignedIn}/>
         }
       </div>

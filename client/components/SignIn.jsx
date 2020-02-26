@@ -1,15 +1,18 @@
 import axios from 'axios';
 import React from 'react';
+import SignUp from './SignUp.jsx';
 
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: null,
-      password: null
+      password: null,
+      view: 'sign-in'
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSignIn = this.handleSignIn.bind(this);
+    this.handleSignUpClick = this.handleSignUpClick.bind(this);
   }
 
   // on form change, update state with email and/or password entered
@@ -33,15 +36,28 @@ class SignIn extends React.Component {
       })
   };
 
+  handleSignUpClick() {
+    this.setState({
+      view: 'sign-up'
+    })
+  }
+
   render() {
     return (
-      <div className="sign-in-form">
-        <h2>Sign In</h2>
-        <form>
-          <input type="email" id="email" placeholder="Email" onChange={this.handleChange} required></input>
-          <input type="password" id="password" placeholder='Password' onChange={this.handleChange} required></input>
-          <button onClick={this.handleSignIn}>Sign In</button>
-        </form>
+      <div>
+      {
+        (this.state.view === 'sign-in')
+        ? <div className="sign-in-form">
+            <h2>Sign In</h2>
+              <form>
+              <input type="email" id="email" placeholder="Email" onChange={this.handleChange} required></input>
+              <input type="password" id="password" placeholder="Password" onChange={this.handleChange} required></input>
+              <button onClick={this.handleSignIn}>Sign In</button>
+            </form>
+          <a href="#" id="signup" onClick={this.handleSignUpClick}>Sign Up</a>
+        </div>
+        : <SignUp handleUserSignedIn={this.props.handleUserSignedIn}/>
+      }
       </div>
     );
   };
