@@ -5,7 +5,7 @@ const models = require('./db/models');
 const router = require('express').Router();
 
 // return a user's portfolio if signed in
-router.get('/', (req, res) => {
+router.get('/portfolio/:user', (req, res) => {
 	res.sendStatus(200);
 });
 
@@ -42,12 +42,12 @@ router.post('/login', async (req, res) => {
 		let login = await models.verifyEmail(req.body.email);
 		// if email not found...
 		if(!login) {
-			res.send('invalid email');
+			res.sendStatus(400);
 			// checks if password provided matches hashed password in db
 		} else if (!hashUtils.compareHash(req.body.password, login.hash, login.salt)) {
-			res.send('invalid password');
+			res.sendStatus(400);
 		} else {
-			res.send('success');
+			res.send({ user_id: login.user_id });
 		}
 	}
 	catch(err) {

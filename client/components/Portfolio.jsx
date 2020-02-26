@@ -1,18 +1,9 @@
 import React from 'react';
 
-class Portfolio extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: '',
-      loggedIn: false
-    };
-  };
+const Portfolio = (props) => {
+  return (
+    <div>Portfolio</div>
+  )
+};
 
-  render() {
-    return (
-
-    )
-  }
-
-}
+export default Portfolio;
