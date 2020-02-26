@@ -15,6 +15,6 @@ const Portfolio = db.define('portfolio', {
 });
 
 // adds user id as the foreign key in the transactions table
-// Portfolio.belongsTo(Users, { foreignKey: 'user_id' });
+Portfolio.belongsTo(Users, { foreignKey: 'user_id' });
 
 module.exports = Portfolio;

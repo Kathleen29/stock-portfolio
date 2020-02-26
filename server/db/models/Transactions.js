@@ -27,6 +27,6 @@ const Transactions = db.define('transactions', {
 });
 
 // adds user id as the foreign key in the transactions table
-// Transactions.belongsTo(Users, { foreignKey: 'user_id' });
+Transactions.belongsTo(Users, { foreignKey: 'user_id' });
 
 module.exports = Transactions;

@@ -21,6 +21,14 @@ const Users = db.define('users', {
   salt: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  cash_in: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  balance: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
 });
 
