@@ -1,6 +1,7 @@
 const db = require('../index.js');
 const Sequelize = require('sequelize');
 
+// defines table that stores user emails and passwords for log-in
 const Users = db.define('users', {
   user_id: {
     type: Sequelize.INTEGER,
