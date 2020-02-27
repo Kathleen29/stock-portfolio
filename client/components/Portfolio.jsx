@@ -10,16 +10,13 @@ const Portfolio = (props) => {
       <tbody>
       {(props.portfolio)
         ? props.portfolio.map((stock) => {
-          axios.get('/quote/' + stock.ticker)
-            .then((res) => {
               return (
                 <tr>
-                  <td>{stock.ticker}</td>
+                  <td>{stock.ticker.toUpperCase()}</td>
                   <td>{stock.shares} Shares</td>
-                  <td>${(res.data.quote * stock.shares).toFixed(2)}</td>
+                  <td>${(stock.shares).toFixed(2)}</td>
                 </tr>
               )
-            })
           })
         : <tr></tr>
       }

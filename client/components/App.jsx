@@ -32,25 +32,14 @@ class App extends React.Component {
       })
   };
 
-  getPortfolio(user) {
-    axios.get('/portfolio/' + user)
-      .then((res) => {
-        this.setState({
-          portfolio: res.data.portfolio
-        })
-      })
-      .catch((err) => {
-        console.log('Portfolio Empty');
-      })
-  };
-
   render() {
     return (
       <div>
         { // if a user is signed in, render portfolio
           // else, render sign-in form
           (this.state.loggedIn)
-          ? <Portfolio portfolio={this.state.portfolio} bal={this.state.balance} user={this.state.user}/>
+          ? <Portfolio portfolio={this.state.portfolio} bal={this.state.balance} user={this.state.user}
+          updatePortfolio={this.handleUserSignedIn}/>
           : <SignIn handleUserSignedIn={this.handleUserSignedIn}/>
         }
       </div>
