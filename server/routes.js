@@ -16,6 +16,18 @@ router.get('/portfolio/:user', async (req, res) => {
 	}
 });
 
+// return a user's portfolio if signed in
+router.get('/transactions/:user', async (req, res) => {
+	try {
+		let userTrans = await models.getPortfolio(req.params.user);
+		res.send( { transactions: userTrans });
+	}
+	catch(err) {
+		console.log(err)
+		res.sendStatus(400);
+	}
+});
+
 // fetches quote for a given symbol from IEX API
 router.get('/quote/:ticker', async (req, res) => {
 	try {
