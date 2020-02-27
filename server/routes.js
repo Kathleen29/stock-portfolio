@@ -8,7 +8,11 @@ const router = require('express').Router();
 router.get('/portfolio/:user', async (req, res) => {
 	try {
 		let portfolio = await models.getPortfolio(req.params.user);
-		res.send( { portfolio: portfolio });
+		let balance = await models.checkBalance(req.params.user);
+		res.send({
+			portfolio: portfolio,
+			balance: balance
+		});
 	}
 	catch(err) {
 		console.log(err)
@@ -43,14 +47,19 @@ router.get('/quote/:ticker', async (req, res) => {
 router.post('/buy', async (req, res) => {
 	try {
 		let totalCost = req.body.shares * req.body.quote;
-		if(models.checkBalance(req.body.user_id, totalCost)) {
+		// check if user can afford total transaction cost
+		let balance = await models.checkBalance(req.body.user_id);
+		if(balance >= totalCost) {
 			// updates transactions, portfolio, and user's balance
 			let result = [
 				await models.buyStock(req.body, totalCost),
 				await models.addToPortfolio(req.body),
 				await models.updateBalance(req.body)
 			];
-			res.sendStatus(201);
+			res.send({
+				result: result,
+				balance: balance
+			});
 		}
 		else {
 			res.sendStatus(400);
@@ -84,12 +93,14 @@ router.post('/login', async (req, res) => {
 // creates a new user and adds to the database
 router.post('/signup', async (req, res) => {
 	try {
-		let result = await models.createUser(req.body);
+		let newUserId = await models.createUser(req.body);
 		// if not inserted into the db, email already exists
-		if(!result) {
+		if(!newUserId) {
 			res.send('Email already exists');
 		}
-		res.sendStatus(201);
+		res.send({
+			userId: newUserId
+		});
 	}
 	catch(err) {
 		console.log(err);

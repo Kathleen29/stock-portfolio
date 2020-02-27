@@ -27,11 +27,11 @@ const Users = db.define('users', {
     allowNull: false
   },
   cash_in: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DECIMAL(10,2),
     allowNull: false
   },
   balance: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DECIMAL(10,2),
     allowNull: false
   }
 });

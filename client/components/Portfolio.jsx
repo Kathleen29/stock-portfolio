@@ -8,18 +8,15 @@ const Portfolio = (props) => {
       <h2>Portfolio $({})</h2>
       <table id='portfolio-table'>
       <tbody>
-      { (props.portfolio)
+      {(props.portfolio)
         ? props.portfolio.map((stock) => {
           axios.get('/quote/' + stock.ticker)
             .then((res) => {
-              stock.currVal = res.data.quote * stock.shares;
-            })
-            .then(() => {
               return (
                 <tr>
                   <td>{stock.ticker}</td>
                   <td>{stock.shares} Shares</td>
-                  <td>${stock.currVal}</td>
+                  <td>${(res.data.quote * stock.shares).toFixed(2)}</td>
                 </tr>
               )
             })
@@ -28,7 +25,7 @@ const Portfolio = (props) => {
       }
       </tbody>
       </table>
-      <Buy userId={props.user}/>
+      <Buy userId={props.user} bal={props.bal} updatePortfolio={props.updatePortfolio}/>
     </div>
   )
 };

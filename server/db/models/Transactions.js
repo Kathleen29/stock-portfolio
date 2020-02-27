@@ -17,11 +17,11 @@ const Transactions = db.define('transactions', {
     allowNull: false
   },
   price: {
-    type: Sequelize.REAL,
+    type: Sequelize.DECIMAL(10,2),
     allowNull: false
   },
   total: {
-    type: Sequelize.REAL,
+    type: Sequelize.DECIMAL(10,2),
     allowNull: false
   }
 });

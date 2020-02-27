@@ -31,6 +31,7 @@ class Buy extends React.Component {
         })
         .then((res) => {
           // update portfolio view
+          this.props.updatePortfolio(this.props.userId);
         })
         .catch((err) => {
           console.log('Not enough funds');
@@ -43,11 +44,14 @@ class Buy extends React.Component {
 
   render() {
     return (
+      <div>
+      <h2>Cash - ${this.props.bal}</h2>
       <form>
         <input type="text" id="ticker" placeholder="Ticker" onChange={this.handleChange} required></input>
         <input type="number" id="qty" placeholder="Qty" onChange={this.handleChange} required></input>
         <button onClick={this.handleBuy}>Buy</button>
       </form>
+      </div>
     )
   }
 };

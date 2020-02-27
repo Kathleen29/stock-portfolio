@@ -28,7 +28,7 @@ class SignUp extends React.Component {
       password: this.state.password
     })
       .then((res) => {
-        this.props.handleUserSignedIn(res.data.user_id);
+        this.props.handleUserSignedIn(res.data.userId);
       })
       .catch((err) => {
         console.log('Email already exists');

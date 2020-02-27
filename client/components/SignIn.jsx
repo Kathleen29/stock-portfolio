@@ -22,7 +22,7 @@ class SignIn extends React.Component {
     });
   };
 
-  handleSignIn(event) {
+  handleSignIn() {
     // validate the input before creating user session
     axios.post('/login', {
       email: this.state.email,

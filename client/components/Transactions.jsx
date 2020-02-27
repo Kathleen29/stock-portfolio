@@ -1,25 +1,44 @@
 import axios from 'axios';
 import React from 'react';
 
-const Transactions = (props) => {
-  getTransactions(user) {
-    return axios.get('/transactions/' + user)
+class Transactions extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      view: false,
+      transactions: null
+    };
+    this.getTransactions = this.getTransactions.bind(this);
+  };
+
+  getTransactions(userId) {
+    axios.get('/transactions/' + userId)
       .then((res) => {
-        return res.data.transactions;
+        this.setState({
+          view: true,
+          transactions: res
+        })
       })
   }
 
   render() {
     return (
-      <table>
-        <tbody>
-          { getTransactions(props.userId).map(trans => {
-            <tr>BUY ({trans.ticker})</tr>
-            <tr>{trans.shares} Shares</tr>
-            <tr>@ {trans.total}</tr>
-          })}
-        </tbody>
-      </table>
+      <div>
+      { (this.state.view)
+        ? <table>
+          <tbody>
+            { this.state.transactions.map(trans => {
+              <tr>
+              <td>BUY ({trans.ticker})</td>
+              <td>{trans.shares} Shares</td>
+              <td>@ {trans.total}</td>
+              </tr>
+            })}
+          </tbody>
+        </table>
+        : <a href="#">Transactions</a>
+      }
+      </div>
     )
   }
 };

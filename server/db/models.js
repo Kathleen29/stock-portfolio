@@ -65,33 +65,36 @@ const createUser = (data) => {
 		salt:	newSalt,
 		cash_in: 5000.00,
 		balance: 5000.00
-	});
+	})
+	.then((user) => {
+		return user.user_id;
+	})
 };
 
 // looks up an email in the users table
 const verifyEmail = (email) => {
-	return Users.findOne({ where: { email: email } });
+	return Users.findOne({ where: { email: email } })
+		.then((user) => {
+			return user;
+		})
 };
 
 // looks up portfolio given a user id
 const getPortfolio = (userId) => {
-	return Portfolios.findAll({ where: { user_id: userId }});
-};
-
-const getCashIn = (userId) => {
-	return User.findOne({ where: { user_id: userId } });
-};
-
-const checkBalance = (userId, total) => {
-	// check if a user can afford total transaction cost{
-	return Users.findOne({ where: { user_id: userId} })
+	return Portfolios.findAll({ where: { user_id: userId }})
 		.then((res) => {
-			if(res.balance >= total) {
-				return true;
-			} else {
-				return false;
-			}
-		});
+			return res;
+		})
+};
+
+const checkBalance = (userId) => {
+	// check if a user can afford total transaction cost{
+	return Users.findOne({
+		where: { user_id: userId }
+	})
+	.then((res) => {
+		return res.balance;
+	})
 };
 
 const getTransactionTotal = (userId) => {
