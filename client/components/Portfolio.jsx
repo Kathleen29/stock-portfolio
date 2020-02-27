@@ -14,7 +14,7 @@ const Portfolio = (props) => {
                 <tr>
                   <td>{stock.ticker.toUpperCase()}</td>
                   <td>{stock.shares} Shares</td>
-                  <td>${(stock.shares).toFixed(2)}</td>
+                  <td>${}</td>
                 </tr>
               )
           })

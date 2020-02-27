@@ -8,37 +8,42 @@ class Transactions extends React.Component {
       view: false,
       transactions: null
     };
-    this.getTransactions = this.getTransactions.bind(this);
   };
 
-  getTransactions(userId) {
-    axios.get('/transactions/' + userId)
+  componentDidMount() {
+    // make a call to fetch transactions from the db
+    axios.get('/transactions/' + this.props.userId)
       .then((res) => {
+        // set the view to 'true' to render transactions
         this.setState({
           view: true,
-          transactions: res
+          transactions: res.data.transactions
         })
       })
-  }
+  };
 
   render() {
+    // for each transaction, render to the page
     return (
       <div>
-      { (this.state.view)
+        <h2>Transactions</h2>
+        { (this.state.view)
         ? <table>
           <tbody>
             { this.state.transactions.map(trans => {
-              <tr>
-              <td>BUY ({trans.ticker})</td>
-              <td>{trans.shares} Shares</td>
-              <td>@ {trans.total}</td>
-              </tr>
-            })}
+              return (
+                <tr>
+                  <td>BUY ({(trans.ticker).toUpperCase()})</td>
+                <td>{trans.shares} Shares</td>
+                <td>@ {trans.price}</td>
+                </tr>
+              )
+            }) }
           </tbody>
-        </table>
-        : <a href="#">Transactions</a>
-      }
-      </div>
+          </table>
+        : <div></div>
+        }
+    </div>
     )
   }
 };

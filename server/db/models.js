@@ -97,15 +97,8 @@ const checkBalance = (userId) => {
 	})
 };
 
-const getTransactionTotal = (userId) => {
-	return Transactions.findAll({
-		attributes: [
-			[sequelize.fn('sum', sequelize.col('total'))]
-		],
-		where: {
-			user_id: userId
-		}
-	})
+const getTransactions = (userId) => {
+	return Transactions.findAll({ where: { user_id: userId }});
 };
 
 module.exports = {
@@ -115,5 +108,6 @@ module.exports = {
 	createUser,
 	verifyEmail,
 	checkBalance,
-	getPortfolio
+	getPortfolio,
+	getTransactions
 };

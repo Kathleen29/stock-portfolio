@@ -10,7 +10,7 @@ class Buy extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleBuy = this.handleBuy.bind(this);
-  }
+  };
 
   // on form change, update state with email and/or password entered
   handleChange(event) {

@@ -23,7 +23,7 @@ router.get('/portfolio/:user', async (req, res) => {
 // return a user's portfolio if signed in
 router.get('/transactions/:user', async (req, res) => {
 	try {
-		let userTrans = await models.getPortfolio(req.params.user);
+		let userTrans = await models.getTransactions(req.params.user);
 		res.send( { transactions: userTrans });
 	}
 	catch(err) {
