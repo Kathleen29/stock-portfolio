@@ -94,17 +94,14 @@ router.post('/login', async (req, res) => {
 router.post('/signup', async (req, res) => {
 	try {
 		let newUserId = await models.createUser(req.body);
-		// if not inserted into the db, email already exists
-		if(!newUserId) {
-			res.send('Email already exists');
-		}
+
 		res.send({
 			userId: newUserId
 		});
 	}
 	catch(err) {
-		console.log(err);
-		res.sendStatus(404);
+		// if not inserted into the db, email already exists
+		res.sendStatus(400);
 	}
 });
 

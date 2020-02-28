@@ -25,6 +25,7 @@ class SignUp extends React.Component {
 
   handleSignUp(event) {
     // validate the input
+    let error = {};
     if(this.formValidation()) {
       axios.post('/signup', {
         name: this.state.name,
@@ -37,7 +38,10 @@ class SignUp extends React.Component {
         })
         .catch((err) => {
           // if error, email already exists in db
-          console.log('Email already exists');
+          error.emailExists = 'Email already exists';
+          this.setState({
+            errors: error
+          })
         });
       };
   };
@@ -51,7 +55,6 @@ class SignUp extends React.Component {
       isValid = false;
     }
 
-    console.log()
     // checks if email was entered
     if(!this.state.email || !(/\S+@\S+\.\S+/).test(this.state.email)) {
       errors.email = 'Please provide valid email';
@@ -82,6 +85,7 @@ class SignUp extends React.Component {
           <input type="password" id="password" placeholder="Password" onChange={this.handleChange} />
           <div className="errors">{this.state.errors.password}</div>
           <button onClick={this.handleSignUp}>Sign Up</button>
+          <div className="errors">{this.state.errors.emailExists}</div>
         </form>
       </div>
     );

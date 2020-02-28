@@ -8,7 +8,8 @@ class SignIn extends React.Component {
     this.state = {
       email: null,
       password: null,
-      view: 'sign-in'
+      view: 'sign-in',
+      error: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSignIn = this.handleSignIn.bind(this);
@@ -32,7 +33,9 @@ class SignIn extends React.Component {
         this.props.handleUserSignedIn(res.data.user_id);
       })
       .catch((err) => {
-        console.log('Invalid email and/or password');
+        this.setState ({
+          error: 'Invalid email and/or password'
+        });
       })
   };
 
@@ -50,11 +53,12 @@ class SignIn extends React.Component {
         ? <div className="sign-in-form">
             <h2>Sign In</h2>
               <form>
-              <input type="email" id="email" placeholder="Email" onChange={this.handleChange} required></input>
-              <input type="password" id="password" placeholder="Password" onChange={this.handleChange} required></input>
+              <input type="email" id="email" placeholder="Email" onChange={this.handleChange}/>
+              <input type="password" id="password" placeholder="Password" onChange={this.handleChange}/>
               <button onClick={this.handleSignIn}>Sign In</button>
             </form>
           <a href="#" id="signup" onClick={this.handleSignUpClick}>Sign Up</a>
+          <div className="error">{this.state.error}</div>
         </div>
         : <SignUp handleUserSignedIn={this.props.handleUserSignedIn}/>
       }

@@ -8,13 +8,13 @@ const Portfolio = (props) => {
       <h2>Portfolio $({})</h2>
       <table id='portfolio-table'>
       <tbody>
-      {(props.portfolio)
+      { (props.portfolio)
         ? props.portfolio.map((stock) => {
               return (
                 <tr key={stock.ticker}>
                   <td>{stock.ticker.toUpperCase()}</td>
                   <td>{stock.shares} Shares</td>
-                  <td>${}</td>
+                  <td>${stock.currVal}</td>
                 </tr>
               )
           })
