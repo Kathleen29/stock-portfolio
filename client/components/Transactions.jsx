@@ -43,6 +43,7 @@ class Transactions extends React.Component {
           </table>
         : <div></div>
         }
+        <a href='#' id='portfolio-link' onClick={this.props.portfolioClick}>Portfolio</a>
     </div>
     )
   }

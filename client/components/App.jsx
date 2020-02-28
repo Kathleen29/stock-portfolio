@@ -16,6 +16,7 @@ class App extends React.Component {
     };
     this.handleUserSignedIn = this.handleUserSignedIn.bind(this);
     this.viewTransactions = this.viewTransactions.bind(this);
+    this.handlePortfolioClick = this.handlePortfolioClick.bind(this);
   }
 
   // set user id and logged in to 'true' for authenticated users
@@ -32,6 +33,10 @@ class App extends React.Component {
       .catch((err) => {
         console.log('Portfolio Empty');
       })
+  };
+
+  handlePortfolioClick() {
+    this.handleUserSignedIn(this.state.user);
   };
 
   viewTransactions() {
@@ -52,7 +57,7 @@ class App extends React.Component {
           updatePortfolio={this.handleUserSignedIn}/>
             <a href='#' id='transactions' onClick={this.viewTransactions}>Transactions</a>
              </div>
-            : <Transactions userId={this.state.user}/>
+            : <Transactions userId={this.state.user} portfolioClick={this.handlePortfolioClick}/>
           : <SignIn handleUserSignedIn={this.handleUserSignedIn}/>
         }
       </div>
