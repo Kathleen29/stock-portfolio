@@ -18,8 +18,8 @@ class Transactions extends React.Component {
         this.setState({
           view: true,
           transactions: res.data.transactions
-        })
-      })
+        });
+      });
   };
 
   render() {
