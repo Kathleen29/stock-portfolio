@@ -32,7 +32,7 @@ class Transactions extends React.Component {
           <tbody>
             { this.state.transactions.map(trans => {
               return (
-                <tr>
+                <tr key={trans.id}>
                   <td>BUY ({(trans.ticker).toUpperCase()})</td>
                 <td>{trans.shares} Shares</td>
                 <td>@ {trans.price}</td>

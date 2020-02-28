@@ -11,7 +11,7 @@ const Portfolio = (props) => {
       {(props.portfolio)
         ? props.portfolio.map((stock) => {
               return (
-                <tr>
+                <tr key={stock.ticker}>
                   <td>{stock.ticker.toUpperCase()}</td>
                   <td>{stock.shares} Shares</td>
                   <td>${}</td>
