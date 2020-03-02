@@ -9,8 +9,20 @@ router.get('/portfolio/:user', async (req, res) => {
 	try {
 		let portfolio = await models.getPortfolio(req.params.user);
 		let balance = await models.checkBalance(req.params.user);
+
+		let fetchCurrPrice = async (port) => {
+			for(let i = 0; i < port.length; i++) {
+				let quote = await axios.get(`https://cloud.iexapis.com/stable/stock/${port[i].ticker}/quote?token=${API_KEY}`);
+
+				port[i].dataValues['currVal'] = quote.data.latestPrice;
+			};
+			return port;
+		}
+
+	let result = await fetchCurrPrice(portfolio);
+
 		res.send({
-			portfolio: portfolio,
+			portfolio: result,
 			balance: balance
 		});
 	}

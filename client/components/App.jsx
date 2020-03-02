@@ -19,8 +19,9 @@ class App extends React.Component {
     this.handlePortfolioClick = this.handlePortfolioClick.bind(this);
   }
 
-  // set user id and logged in to 'true' for authenticated users
+  // set user id, portfolio, and loggedIn to 'true' for authenticated users
   handleUserSignedIn(userId) {
+    // fetches portfolio from the server
     return axios.get('/portfolio/' + userId)
       .then((res) => {
         this.setState({
@@ -31,26 +32,27 @@ class App extends React.Component {
         })
       })
       .catch((err) => {
-        console.log('Portfolio Empty');
-      })
+        console.log(err);
+      });
   };
 
+  // if portfolio link is clicked from transactions view, render the user's portfolio
   handlePortfolioClick() {
     this.handleUserSignedIn(this.state.user);
   };
 
   viewTransactions() {
+    // if transactions link is clicked from portfolio view, reset portfolio in state
     this.setState({
       portfolio: null
-    })
-  }
+    });
+  };
 
   render() {
     return (
       <div>
-        { // if a user is signed in, render portfolio
-          // else, render sign-in form
-          (this.state.loggedIn)
+        {/* if a user is signed in, render portfolio, else, render sign-in form */}
+        { (this.state.loggedIn)
           ? (this.state.portfolio)
             ? <div>
             <Portfolio portfolio={this.state.portfolio} bal={this.state.balance} user={this.state.user}
