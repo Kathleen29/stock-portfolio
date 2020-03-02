@@ -15,6 +15,7 @@ router.get('/portfolio/:user', async (req, res) => {
 				let quote = await axios.get(`https://cloud.iexapis.com/stable/stock/${port[i].ticker}/quote?token=${API_KEY}`);
 
 				port[i].dataValues['currVal'] = quote.data.latestPrice;
+				port[i].dataValues['openPrice'] = quote.data.open;
 			};
 			return port;
 		}
@@ -48,6 +49,7 @@ router.get('/transactions/:user', async (req, res) => {
 router.get('/quote/:ticker', async (req, res) => {
 	try {
 		let quote = await axios.get(`https://cloud.iexapis.com/stable/stock/${req.params.ticker}/quote?token=${API_KEY}`);
+		console.log(quote);
 		res.send({ quote: quote.data.latestPrice });
 	}
 	catch {

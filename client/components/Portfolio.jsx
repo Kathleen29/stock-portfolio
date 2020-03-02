@@ -9,10 +9,20 @@ const Portfolio = (props) => {
   if(props.portfolio) {
     // iterate over each stock, creating a table row for each
     props.portfolio.map((stock) => {
+      let fontColor = 'grey';
       // add the total value of each stock to the total portfolio value
       totalVal += stock.currVal * stock.shares;
+
+      if(stock.currVal < stock.openPrice) {
+        fontColor = 'red';
+      };
+
+      if(stock.currVal > stock.openPrice) {
+        fontColor = 'green';
+      };
+
       stockRows.push(
-        <tr key={stock.ticker}>
+        <tr key={stock.ticker} style={{color: fontColor}}>
           <td>{stock.ticker.toUpperCase()}</td>
           <td>{stock.shares} Shares</td>
           <td>${(stock.currVal * stock.shares).toFixed(2)}</td>

@@ -48,7 +48,7 @@ class SignIn extends React.Component {
   render() {
     return (
       <div>
-      { (this.state.view === 'sign-in')
+      { (this.state.view === "sign-in")
         ? <div className="sign-in-form">
             <h2>Sign In</h2>
               <form>

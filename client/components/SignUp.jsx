@@ -78,14 +78,14 @@ class SignUp extends React.Component {
       <div className="sign-up-form">
         <h2>Register</h2>
         <form>
-          <input type="text" id="name" placeholder="Name" onChange={this.handleChange}/>
-          <div className="errors">{this.state.errors.name}</div>
-          <input type="email" id="email" placeholder="Email" onChange={this.handleChange}/>
-          <div className="errors">{this.state.errors.email}</div>
-          <input type="password" id="password" placeholder="Password" onChange={this.handleChange}/>
-          <div className="errors">{this.state.errors.password}</div>
+          <input type="text" id="name" placeholder="Name" onChange={this.handleChange} required/>
+          <div className="error">{this.state.errors.name}</div>
+          <input type="email" id="email" placeholder="Email" onChange={this.handleChange} required/>
+          <div className="error">{this.state.errors.email}</div>
+          <input type="password" id="password" placeholder="Password" onChange={this.handleChange} required/>
+          <div className="error">{this.state.errors.password}</div>
           <button onClick={this.handleSignUp}>Sign Up</button>
-          <div className="errors">{this.state.errors.emailExists}</div>
+          <div className="error">{this.state.errors.emailExists}</div>
         </form>
       </div>
     );
