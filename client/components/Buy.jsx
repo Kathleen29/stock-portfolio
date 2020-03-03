@@ -7,7 +7,7 @@ class Buy extends React.Component {
     this.state = {
       ticker: null,
       qty: null,
-      error: ''
+      error: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleBuy = this.handleBuy.bind(this);
@@ -16,7 +16,8 @@ class Buy extends React.Component {
   // on form change, update state with ticker symbol and quantity to buy
   handleChange(event) {
     this.setState({
-      [event.target.id]: event.target.value
+      [event.target.id]: event.target.value,
+      error: null
     });
   };
 
@@ -33,9 +34,14 @@ class Buy extends React.Component {
         .then((res) => {
           // update portfolio view
           this.props.updatePortfolio(this.props.userId);
+          this.setState({
+            ticker: null,
+            qty: null,
+            error: null
+          })
         })
         .catch((err) => {
-              this.setState({
+          this.setState({
             error: 'Not enough funds'
           });
         });
