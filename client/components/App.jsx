@@ -17,7 +17,7 @@ class App extends React.Component {
     this.handleUserSignedIn = this.handleUserSignedIn.bind(this);
     this.viewTransactions = this.viewTransactions.bind(this);
     this.handlePortfolioClick = this.handlePortfolioClick.bind(this);
-  }
+  };
 
   // set user id, portfolio, and loggedIn to 'true' for authenticated users
   handleUserSignedIn(userId) {
@@ -29,7 +29,7 @@ class App extends React.Component {
           loggedIn: true,
           portfolio: res.data.portfolio,
           balance: res.data.balance
-        })
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -53,6 +53,7 @@ class App extends React.Component {
       <div>
         {/* if a user is signed in, render portfolio, else, render sign-in form */}
         { (this.state.loggedIn)
+          // if a user's portfolio is saved to state, render the portfolio, else, render transaction list
           ? (this.state.portfolio)
             ? <div>
             <Portfolio portfolio={this.state.portfolio} bal={this.state.balance} user={this.state.user}

@@ -6,21 +6,22 @@ class Buy extends React.Component {
     super(props);
     this.state = {
       ticker: null,
-      qty: null
+      qty: null,
+      error: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleBuy = this.handleBuy.bind(this);
   };
 
-  // on form change, update state with email and/or password entered
+  // on form change, update state with ticker symbol and quantity to buy
   handleChange(event) {
     this.setState({
-      [event.target.id]: event.target.value,
+      [event.target.id]: event.target.value
     });
   };
 
   handleBuy() {
-    // validate the input before creating user session
+    // look up current price of stock
     axios.get('/quote/' + this.state.ticker)
       .then((res) => {
         axios.post('/buy', {
@@ -34,12 +35,16 @@ class Buy extends React.Component {
           this.props.updatePortfolio(this.props.userId);
         })
         .catch((err) => {
-          console.log('Not enough funds');
-        })
+              this.setState({
+            error: 'Not enough funds'
+          });
+        });
       })
       .catch((err) => {
-        console.log('Invalid ticker symbol');
-      })
+        this.setState({
+          error: 'Invalid ticker symbol'
+        });
+      });
   };
 
   render() {
@@ -47,13 +52,13 @@ class Buy extends React.Component {
       <div>
       <h2>Cash - ${this.props.bal}</h2>
       <form>
-        <input type="text" id="ticker" placeholder="Ticker" onChange={this.handleChange} required></input>
-        <input type="number" id="qty" placeholder="Qty" onChange={this.handleChange} required></input>
+        <input type="text" id="ticker" placeholder="Ticker" onChange={this.handleChange} required/>        <input type="number" id="qty" placeholder="Qty" onChange={this.handleChange} required/>
+        <div className="error">{this.state.error}</div>
         <button onClick={this.handleBuy}>Buy</button>
       </form>
       </div>
-    )
-  }
+    );
+  };
 };
 
 export default Buy;
