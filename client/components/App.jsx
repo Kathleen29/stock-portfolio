@@ -12,8 +12,9 @@ class App extends React.Component {
       user: null,
       loggedIn: false,
       portfolio: null,
-      balance: null
+      balance: null,
     };
+
     this.handleUserSignedIn = this.handleUserSignedIn.bind(this);
     this.viewTransactions = this.viewTransactions.bind(this);
     this.handlePortfolioClick = this.handlePortfolioClick.bind(this);

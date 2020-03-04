@@ -18,7 +18,7 @@ router.get('/portfolio/:user', async (req, res) => {
 
 				stocks[i].dataValues['currVal'] = quote.data.latestPrice;
 				// if open price, set openPrice to open, else set openPrice to the previousClose price
-				stocks[i].dataValues['openPrice'] = quote.data.open || quote.data.previousClose
+				stocks[i].dataValues['openPrice'] = quote.data.open || quote.data.previousClose;
 			};
 			return stocks;
 		};
@@ -75,12 +75,12 @@ router.post('/buy', async (req, res) => {
 				result: result,
 				balance: balance
 			});
-		}
-		else {
-			res.sendStatus(400);
+		} else {
+			res.send(balance >= totalCost);
 		}
 	}
 	catch(err) {
+		console.log(err);
 		res.sendStatus(404);
 	}
 });

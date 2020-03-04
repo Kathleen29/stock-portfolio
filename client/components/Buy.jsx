@@ -32,21 +32,28 @@ class Buy extends React.Component {
           user_id: this.props.userId
         })
         .then((res) => {
-          // update portfolio view
-          this.props.updatePortfolio(this.props.userId);
-          this.setState({
-            ticker: null,
-            qty: null,
-            error: null
-          })
-        })
-        .catch((err) => {
-          this.setState({
-            error: 'Not enough funds'
-          });
+          // if not res.data, transaction was not completed
+          if(!res.data) {
+            this.setState({
+              error: 'Not enough funds'
+            });
+          } else {
+            alert('Purchased ' + this.state.qty + ' share(s) of ' + this.state.ticker.toUpperCase() + '!');
+            // clear form
+            document.getElementById('buy-form').reset();
+            // clear state
+            this.setState({
+              ticker: null,
+              qty: null,
+              error: null
+            });
+            // update portfolio view
+            this.props.updatePortfolio(this.props.userId);
+          };
         });
       })
       .catch((err) => {
+        // if call to IEX API throws an error, ticker symbol is invalid
         this.setState({
           error: 'Invalid ticker symbol'
         });
@@ -57,7 +64,7 @@ class Buy extends React.Component {
     return (
       <div>
       <h2>Cash - ${this.props.bal}</h2>
-      <form>
+      <form id="buy-form">
         <input type="text" id="ticker" placeholder="Ticker" onChange={this.handleChange} required/>        <input type="number" id="qty" placeholder="Qty" onChange={this.handleChange} required/>
         <div className="error">{this.state.error}</div>
         <button onClick={this.handleBuy}>Buy</button>
