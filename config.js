@@ -1,3 +1,3 @@
 module.exports = {
-  token: 'sk_df2420129a3c44d9b20f3a6f0d2e7f59',
+  token: 'sk_334f3565674e4323a46f1f695082e12d',
 };
