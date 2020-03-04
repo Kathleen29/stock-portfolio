@@ -15,6 +15,7 @@ class App extends React.Component {
       balance: null,
     };
 
+    this.fetchInterval = 0;
     this.handleUserSignedIn = this.handleUserSignedIn.bind(this);
     this.viewTransactions = this.viewTransactions.bind(this);
     this.handlePortfolioClick = this.handlePortfolioClick.bind(this);
@@ -31,6 +32,8 @@ class App extends React.Component {
           portfolio: res.data.portfolio,
           balance: res.data.balance
         });
+        // API call to fetch portfolio and current stock prices every 10 seconds
+        this.fetchInterval = setInterval(this.handlePortfolioClick, 10000);
       })
       .catch((err) => {
         console.log(err);
@@ -47,6 +50,11 @@ class App extends React.Component {
     this.setState({
       portfolio: null
     });
+  };
+
+  componentWillUnmount() {
+    // stop interval of API call to fetch portfolio and current stock prices
+    clearInterval(this.fetchInterval);
   };
 
   render() {
