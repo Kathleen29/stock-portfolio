@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import ReactDom from 'react-dom';
+import Buy from './Buy.jsx';
 import Portfolio from './Portfolio.jsx';
 import SignIn from './SignIn.jsx';
 import Transactions from './Transactions.jsx';
@@ -15,7 +16,6 @@ class App extends React.Component {
       balance: null,
     };
 
-    this.fetchInterval = 0;
     this.handleUserSignedIn = this.handleUserSignedIn.bind(this);
     this.viewTransactions = this.viewTransactions.bind(this);
     this.handlePortfolioClick = this.handlePortfolioClick.bind(this);
@@ -23,6 +23,7 @@ class App extends React.Component {
 
   // set user id, portfolio, and loggedIn to 'true' for authenticated users
   handleUserSignedIn(userId) {
+    console.log('ran');
     // fetches portfolio from the server
     return axios.get('/portfolio/' + userId)
       .then((res) => {
@@ -32,8 +33,6 @@ class App extends React.Component {
           portfolio: res.data.portfolio,
           balance: res.data.balance
         });
-        // API call to fetch portfolio and current stock prices every 10 seconds
-        this.fetchInterval = setInterval(this.handlePortfolioClick, 10000);
       })
       .catch((err) => {
         console.log(err);
@@ -52,11 +51,6 @@ class App extends React.Component {
     });
   };
 
-  componentWillUnmount() {
-    // stop interval of API call to fetch portfolio and current stock prices
-    clearInterval(this.fetchInterval);
-  };
-
   render() {
     return (
       <div>
@@ -65,11 +59,16 @@ class App extends React.Component {
           // if a user's portfolio is saved to state, render the portfolio, else, render transaction list
           ? (this.state.portfolio)
             ? <div>
-            <Portfolio portfolio={this.state.portfolio} bal={this.state.balance} user={this.state.user}
-          updatePortfolio={this.handleUserSignedIn}/>
             <a href='#' id='transactions' onClick={this.viewTransactions}>Transactions</a>
+            <Portfolio portfolio={this.state.portfolio} user={this.state.user}
+          updatePortfolio={this.handleUserSignedIn}/>
+            {/* render module to buy new stocks */}
+            <Buy userId={this.state.user} bal={this.state.balance} updatePortfolio={this.handleUserSignedIn}/>
              </div>
-            : <Transactions userId={this.state.user} portfolioClick={this.handlePortfolioClick}/>
+            : <div>
+              <a href='#' id='portfolio' onClick={this.handlePortfolioClick}>Portfolio</a>
+              <Transactions userId={this.state.user}/>
+            </div>
           : <SignIn handleUserSignedIn={this.handleUserSignedIn}/>
         }
       </div>

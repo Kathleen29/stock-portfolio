@@ -81,8 +81,9 @@ class SignUp extends React.Component {
     return (
       // renders sign-up form and any errors in the information entered
       <div className="sign-up-form">
+        <nav><a href="#" id='signin' onClick={this.handleSignUpClick}>Sign In</a></nav>
         <h2>Register</h2>
-        <form>
+        <form id="signup-form">
           <input type="text" id="name" placeholder="Name" onChange={this.handleChange} required/>
           <div className="error">{this.state.errors.name}</div>
           <input type="email" id="email" placeholder="Email" onChange={this.handleChange} required/>

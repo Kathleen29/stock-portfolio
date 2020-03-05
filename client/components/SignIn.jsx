@@ -38,25 +38,24 @@ class SignIn extends React.Component {
         });
       })
   };
-
   handleSignUpClick() {
     this.setState({
       view: 'sign-up'
     })
-  }
+  };
 
   render() {
     return (
       <div>
       { (this.state.view === "sign-in")
         ? <div className="sign-in-form">
+            <nav><a href="#" id='signup' onClick={this.handleSignUpClick}>Sign Up</a></nav>
             <h2>Sign In</h2>
               <form>
                 <input type="email" id="email" placeholder="Email" onChange={this.handleChange}/>
                 <input type="password" id="password" placeholder="Password" onChange={this.handleChange}/>
                 <button onClick={this.handleSignIn}>Sign In</button>
             </form>
-            <a href="#" id="signup" onClick={this.handleSignUpClick}>Sign Up</a>
             <div className="error">{this.state.error}</div>
         </div>
         : <SignUp handleUserSignedIn={this.props.handleUserSignedIn}/>

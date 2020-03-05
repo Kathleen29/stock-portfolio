@@ -23,6 +23,7 @@ class Buy extends React.Component {
 
   handleBuy() {
     // look up current price of stock
+    console.log(this.state);
     axios.get('/quote/' + this.state.ticker)
       .then((res) => {
         axios.post('/buy', {
@@ -41,13 +42,8 @@ class Buy extends React.Component {
             alert('Purchased ' + this.state.qty + ' share(s) of ' + this.state.ticker.toUpperCase() + '!');
             // clear form
             document.getElementById('buy-form').reset();
-            // clear state
-            this.setState({
-              ticker: null,
-              qty: null,
-              error: null
-            });
             // update portfolio view
+            console.log(this.props.updatePortfolio);
             this.props.updatePortfolio(this.props.userId);
           };
         });
