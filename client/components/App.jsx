@@ -41,11 +41,6 @@ const App = () => {
     setState({ type: 'fetch portfolio', userId: id});
   });
 
-  // if portfolio link is clicked from transactions view, render the user's portfolio
-  // handlePortfolioClick() {
-  //   this.handleUserSignedIn(this.state.user);
-  // };
-
   const viewTransactions = () => {
     // if transactions link is clicked from portfolio view, reset portfolio in state
     setState({ type: 'view transactions', data: {

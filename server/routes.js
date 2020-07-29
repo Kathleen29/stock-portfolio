@@ -7,7 +7,6 @@ const router = require('express').Router();
 // return a user's portfolio from the database
 router.get('/portfolio/:user', async (req, res) => {
 	try {
-		console.log('portfolio ran')
 		let portfolio = await models.getPortfolio(req.params.user);
 		// get user's balance from the users table
 		let balance = await models.checkBalance(req.params.user);
@@ -81,7 +80,6 @@ router.post('/buy', async (req, res) => {
 		}
 	}
 	catch(err) {
-		console.log(err);
 		res.sendStatus(404);
 	}
 });
@@ -98,7 +96,6 @@ router.post('/login', async (req, res) => {
 		} else if (!hashUtils.compareHash(req.body.password, login.hash, login.salt)) {
 			res.status(400).send('Invalid Password');
 		} else {
-			console.log(login.user_id);
 			res.send({ user_id: login.user_id });
 		}
 	}

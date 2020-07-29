@@ -2,15 +2,6 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
 const Portfolio = ({ user, portfolio, updatePortfolio}) => {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     totalVal: 0
-  //   };
-  //   this.fetchInterval = 0;
-  //   this.stockRows = [];
-  // };{
-
   const [value, setValue] = useState(0);
   let stockRows = [];
 
@@ -19,16 +10,6 @@ const Portfolio = ({ user, portfolio, updatePortfolio}) => {
     // API call to fetch portfolio and current stock prices every 10 seconds
     let fetchInterval = setInterval(() => updatePortfolio(user), 10000);
   }, []);
-
-  // componentDidMount() {
-  //   // API call to fetch portfolio and current stock prices every 10 seconds
-  //   this.fetchInterval = setInterval(() => this.props.updatePortfolio(this.props.user), 10000);
-  // };
-
-  // componentWillUnmount() {
-  //   // stop interval of API call to fetch portfolio and current stock prices
-  //   clearInterval(this.fetchInterval);
-  // };
 
   const mapOverPortfolio = () => {
     if(portfolio) {
