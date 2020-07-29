@@ -7,7 +7,7 @@
     "build": "webpack -d",
     "build-dev": "webpack -d --watch",
     "lint": "eslint ./",
-    "start": "node server/index.js",
+    "start": "nodemon server/index.js",
     "test": "jest --detectOpenHandles --forceExit"
   },
   "repository": {
@@ -38,6 +38,7 @@
     "@babel/preset-env": "^7.8.4",
     "@babel/preset-react": "^7.8.3",
     "babel-loader": "^8.0.6",
+    "nodemon": "^2.0.4",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
   },

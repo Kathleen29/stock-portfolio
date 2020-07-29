@@ -1,68 +1,68 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 import SignUp from './SignUp.jsx';
 
-class SignIn extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: null,
-      password: null,
-      view: 'sign-in',
-      error: ''
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSignIn = this.handleSignIn.bind(this);
-    this.handleSignUpClick = this.handleSignUpClick.bind(this);
-  }
+const SignIn = ({ handleUserSignedIn }) => {
+  const [loginInfo, setLogin] = useState({
+    email: null,
+    password: null,
+    view: 'sign-in',
+    error: null
+  });
 
-  // on form change, update state with email and/or password entered
-  handleChange(event) {
-    this.setState({
-      [event.target.id]: event.target.value,
-    });
-  };
-
-  handleSignIn() {
-    // validate the input before creating user session
-    axios.post('/login', {
-      email: this.state.email,
-      password: this.state.password
-    })
-      .then((res) => {
-        this.props.handleUserSignedIn(res.data.user_id);
-      })
-      .catch((err) => {
-        this.setState ({
-          error: 'Invalid email and/or password'
-        });
-      })
-  };
-  handleSignUpClick() {
-    this.setState({
+  const handleSignUpClick = () => {
+    setLogin({
+      ...loginInfo,
       view: 'sign-up'
     })
   };
 
-  render() {
-    return (
-      <div>
-      { (this.state.view === "sign-in")
-        ? <div className="sign-in-form">
-            <nav><a href="#" id='signup' onClick={this.handleSignUpClick}>Sign Up</a></nav>
-            <h2>Sign In</h2>
-              <form>
-                <input type="email" id="email" placeholder="Email" onChange={this.handleChange}/>
-                <input type="password" id="password" placeholder="Password" onChange={this.handleChange}/>
-                <button onClick={this.handleSignIn}>Sign In</button>
-            </form>
-            <div className="error">{this.state.error}</div>
-        </div>
-        : <SignUp handleUserSignedIn={this.props.handleUserSignedIn}/>
-      }
-      </div>
-    );
+  // on form change, update state with email and/or password entered
+  const handleChange = (event) => {
+    setLogin({
+      ...loginInfo,
+      [event.target.id]: event.target.value
+    });
   };
-};
+
+  const handleSignIn = (event) => {
+    event.preventDefault();
+
+    axios.post('/login', {
+      email: loginInfo.email,
+      password: loginInfo.password
+    })
+      .then(res => {
+        handleUserSignedIn(res.data.user_id);
+     })
+    // validate the input before creating user session
+      .catch(err => {
+        setLogin({
+          ...loginInfo,
+          error: err
+      })
+    })
+  };
+
+  return (
+    <div>
+    { (loginInfo.view === "sign-in")
+      ? <div id="sign-in-form">
+          <nav><a href="#" id='signup' onClick={handleSignUpClick}>Sign Up</a></nav>
+          <h2>Sign In</h2>
+            <form>
+              <input type="email" id="email" placeholder="Email" onChange={handleChange}/>
+              <br/>
+              <input type="password" id="password" placeholder="Password" onChange={handleChange}/>
+              <br/>
+              <button onClick={handleSignIn}>Sign In</button>
+          </form>
+          <div className="error">{loginInfo.error}</div>
+      </div>
+      : <SignUp handleUserSignedIn={handleUserSignedIn}/>
+    }
+    </div>
+  );
+}
 
 export default SignIn;

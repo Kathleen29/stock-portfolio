@@ -1,79 +1,81 @@
 import axios from 'axios';
-import React from 'react';
-import ReactDom from 'react-dom';
+import React, { useState, useReducer, useEffect } from 'react';
 import Buy from './Buy.jsx';
 import Portfolio from './Portfolio.jsx';
 import SignIn from './SignIn.jsx';
 import Transactions from './Transactions.jsx';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: null,
-      loggedIn: false,
-      portfolio: null,
-      balance: null,
-    };
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'fetch portfolio':
+      state = action.data;
+      return state;
+    case 'view transactions':
+      state.portfolio = null;
+      return state;
+  };
+};
 
-    this.handleUserSignedIn = this.handleUserSignedIn.bind(this);
-    this.viewTransactions = this.viewTransactions.bind(this);
-    this.handlePortfolioClick = this.handlePortfolioClick.bind(this);
+const App = () => {
+  let state = {
+    user: null,
+    loggedIn: false,
+    portfolio: null,
+    balance: null,
   };
 
-  // set user id, portfolio, and loggedIn to 'true' for authenticated users
-  handleUserSignedIn(userId) {
-    console.log('ran');
+  const [userInfo, setState] = useReducer(reducer, state);
+
+  const handleUserSignedIn = ((userId) => {
     // fetches portfolio from the server
-    return axios.get('/portfolio/' + userId)
+    let id = userInfo.user || userId;
+    return axios.get('/portfolio/' + id)
       .then((res) => {
-        this.setState({
-          user: userId,
+        setState({ type: 'fetch portfolio', data: {
+          user: id,
           loggedIn: true,
           portfolio: res.data.portfolio,
           balance: res.data.balance
-        });
+        }});
       })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+      .catch(err => err);
+  });
 
   // if portfolio link is clicked from transactions view, render the user's portfolio
-  handlePortfolioClick() {
-    this.handleUserSignedIn(this.state.user);
-  };
+  // handlePortfolioClick() {
+  //   this.handleUserSignedIn(this.state.user);
+  // };
 
-  viewTransactions() {
+  const viewTransactions = () => {
     // if transactions link is clicked from portfolio view, reset portfolio in state
-    this.setState({
+    setState({ type: 'view transactions', data: {
       portfolio: null
-    });
+    }});
   };
 
-  render() {
-    return (
-      <div>
-        {/* if a user is signed in, render portfolio, else, render sign-in form */}
-        { (this.state.loggedIn)
-          // if a user's portfolio is saved to state, render the portfolio, else, render transaction list
-          ? (this.state.portfolio)
-            ? <div>
-            <a href='#' id='transactions' onClick={this.viewTransactions}>Transactions</a>
-            <Portfolio portfolio={this.state.portfolio} user={this.state.user}
-          updatePortfolio={this.handleUserSignedIn}/>
+  console.log(userInfo.portfolio !== null);
+
+  return (
+    <div>
+      {/* if a user is signed in, render portfolio, else, render sign-in form */}
+      { userInfo.loggedIn
+        // if a user's portfolio is saved to state, render the portfolio, else, render transaction list
+        ? (userInfo.portfolio !== null
+          ? <div>
+            <a href='#' id='transactions' onClick={viewTransactions}>Transactions</a>
+            <Portfolio portfolio={userInfo.portfolio} user={userInfo.user}
+        updatePortfolio={handleUserSignedIn}/>
             {/* render module to buy new stocks */}
-            <Buy userId={this.state.user} bal={this.state.balance} updatePortfolio={this.handleUserSignedIn}/>
-             </div>
-            : <div>
-              <a href='#' id='portfolio' onClick={this.handlePortfolioClick}>Portfolio</a>
-              <Transactions userId={this.state.user}/>
-            </div>
-          : <SignIn handleUserSignedIn={this.handleUserSignedIn}/>
-        }
-      </div>
-    );
-  };
+            <Buy userId={userInfo.user} bal={userInfo.balance} updatePortfolio={handleUserSignedIn}/>
+          </div>
+          : <div>
+            <a href='#' id='portfolio' onClick={handleUserSignedIn}>Portfolio</a>
+            <Transactions userId={userInfo.user}/>
+          </div>)
+        : <SignIn handleUserSignedIn={handleUserSignedIn}/>
+      }
+    </div>
+  );
 };
 
 export default App;

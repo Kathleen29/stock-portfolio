@@ -75,6 +75,7 @@ const createUser = (data) => {
 const verifyEmail = (email) => {
 	return Users.findOne({ where: { email: email } })
 		.then((user) => {
+			console.log('queried')
 			return user;
 		})
 };
