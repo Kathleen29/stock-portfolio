@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useReducer, useEffect } from 'react';
+import React, { useState, useReducer } from 'react';
 import Buy from './Buy.jsx';
 import Portfolio from './Portfolio.jsx';
 import SignIn from './SignIn.jsx';
@@ -8,8 +8,17 @@ import Transactions from './Transactions.jsx';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'fetch portfolio':
-      state = action.data;
-      return state;
+      return axios.get('/portfolio/' + action.userId)
+      .then((res) => {
+        state = {
+          user: id,
+          loggedIn: true,
+          portfolio: res.data.portfolio,
+          balance: res.data.balance
+        }
+        return state;
+      })
+      .catch(err => err);
     case 'view transactions':
       state.portfolio = null;
       return state;
@@ -29,16 +38,7 @@ const App = () => {
   const handleUserSignedIn = ((userId) => {
     // fetches portfolio from the server
     let id = userInfo.user || userId;
-    return axios.get('/portfolio/' + id)
-      .then((res) => {
-        setState({ type: 'fetch portfolio', data: {
-          user: id,
-          loggedIn: true,
-          portfolio: res.data.portfolio,
-          balance: res.data.balance
-        }});
-      })
-      .catch(err => err);
+    setState({ type: 'fetch portfolio', userId: id});
   });
 
   // if portfolio link is clicked from transactions view, render the user's portfolio
@@ -52,8 +52,6 @@ const App = () => {
       portfolio: null
     }});
   };
-
-  console.log(userInfo.portfolio !== null);
 
   return (
     <div>
