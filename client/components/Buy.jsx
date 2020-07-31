@@ -2,14 +2,11 @@ import axios from 'axios';
 import React, { useState } from 'react';
 
 const Buy = ({ userId, bal, updatePortfolio }) => {
-  const [buyInfo, setBuyInfo] = useState({
-    ticker: null,
-    qty: null,
-    error: null
-  });
+  const [buyInfo, setBuyInfo] = useState({});
 
   // on form change, update state with ticker symbol and quantity to buy
   const handleChange = (event) => {
+    event.preventDefault();
     setBuyInfo({
       ...buyInfo,
       [event.target.id]: event.target.value,
@@ -36,8 +33,17 @@ const Buy = ({ userId, bal, updatePortfolio }) => {
             });
           } else {
             alert('Purchased ' + buyInfo.qty + ' share(s) of ' + buyInfo.ticker.toUpperCase() + '!');
+
             // clear form
             document.getElementById('buy-form').reset();
+
+            // reset component state
+            setBuyInfo({
+              ticker: null,
+              qty: null,
+              error: null
+            });
+
             // update portfolio view
             updatePortfolio(userId);
           };
@@ -53,14 +59,15 @@ const Buy = ({ userId, bal, updatePortfolio }) => {
   };
 
     return (
-      <div>
+      <>
       <h2>Cash - ${bal}</h2>
       <form id="buy-form">
-        <input type="text" id="ticker" placeholder="Ticker" onChange={handleChange} required/>        <input type="number" id="qty" placeholder="Qty" onChange={handleChange} required/>
+        <input type="text" id="ticker" placeholder="Ticker" onChange={handleChange} required/>
+        <input type="number" id="qty" placeholder="Qty" onChange={handleChange} required/>
         <div className="error">{buyInfo.error}</div>
         <button onClick={handleBuy}>Buy</button>
       </form>
-      </div>
+      </>
     );
 };
 

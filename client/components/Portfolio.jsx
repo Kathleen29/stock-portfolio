@@ -2,17 +2,14 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
 const Portfolio = ({ user, portfolio, updatePortfolio}) => {
-  const [value, setValue] = useState(0);
-  let stockRows = [];
-
-  useEffect(() => {
-    mapOverPortfolio();
-    // API call to fetch portfolio and current stock prices every 10 seconds
-    let fetchInterval = setInterval(() => updatePortfolio(user), 10000);
-  }, []);
+  const [portfolioInfo, setPortfolioInfo] = useState({
+    value: 0,
+    rows: []
+  });
 
   const mapOverPortfolio = () => {
     if(portfolio) {
+      let stockRows = [];
       let totalValue = 0;
       // iterate over each stock, creating a table row for each
       portfolio.map((stock) => {
@@ -37,17 +34,26 @@ const Portfolio = ({ user, portfolio, updatePortfolio}) => {
         );
       });
 
-      setValue(totalValue);
+      setPortfolioInfo({
+        value: totalValue,
+        rows: stockRows
+      });
     };
   };
 
+  useEffect(() => {
+    mapOverPortfolio();
+    // API call to fetch portfolio and current stock prices every 10 seconds
+    let fetchInterval = setInterval(() => updatePortfolio(user), 10000);
+  }, []);
+
   return (
     <div>
-      <h2>Portfolio (${value.toFixed(2)})</h2>
+      <h2>Portfolio (${portfolioInfo.value.toFixed(2)})</h2>
       <table id='portfolio-table'>
         <tbody>
         {/* if user has stocks, render table rows for each, else render an empty row */}
-        { (portfolio) ? stockRows.map(row => row) : <tr></tr> }
+        {portfolioInfo.rows.map(row => row)}
         </tbody>
       </table>
     </div>
