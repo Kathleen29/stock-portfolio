@@ -6,7 +6,7 @@ const Sequelize = require('sequelize');
 // connects to stock_portfolio database
 const db = new Sequelize('stock_portfolio', 'root', '', {
   dialect: 'mysql',
-  host: 'localhost'
+  host: 'mysql://b0404b70907b7e:f6cb7138@us-cdbr-iron-east-04.cleardb.net/heroku_e319ed1fe746801?reconnect=true  '
 });
 
 db.authenticate()
