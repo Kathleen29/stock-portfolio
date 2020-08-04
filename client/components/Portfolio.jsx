@@ -45,6 +45,10 @@ const Portfolio = ({ user, portfolio, updatePortfolio}) => {
     mapOverPortfolio();
     // API call to fetch portfolio and current stock prices every 10 seconds
     let fetchInterval = setInterval(() => updatePortfolio(user), 10000);
+    // clears interval on unmount
+    return () => {
+      clearInterval(fetchInterval);
+    };
   }, []);
 
   return (

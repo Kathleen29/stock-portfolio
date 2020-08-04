@@ -40,6 +40,7 @@ const SignIn = ({ handleUserSignedIn }) => {
       password: loginInfo.password
     })
       .then(res => {
+        if(res.data.err) throw res.data.err;
         handleUserSignedIn(res.data.user_id);
      })
     // validate the input before creating user session
@@ -52,7 +53,7 @@ const SignIn = ({ handleUserSignedIn }) => {
   };
 
   return (
-    <div className='signin-container'>
+    <div className='container'>
     { (loginInfo.view === "sign-in")
       ? <>
        <nav>

@@ -91,10 +91,10 @@ router.post('/login', async (req, res) => {
 		let login = await models.verifyEmail(req.body.email);
 		// if email not found...
 		if(!login) {
-			res.sendStatus(400);
+			res.send({ err: 'Invalid Email Address' });
 			// checks if password provided matches hashed password in db
 		} else if (!hashUtils.compareHash(req.body.password, login.hash, login.salt)) {
-			res.status(400).send('Invalid Password');
+			res.send({ err: 'Invalid Password' });
 		} else {
 			res.send({ user_id: login.user_id });
 		}

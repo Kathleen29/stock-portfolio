@@ -33,7 +33,6 @@ const App = () => {
     let id = userInfo.user || userId;
     return axios.get('/portfolio/' + id)
       .then((res) => {
-        console.log('setting');
         setState({ type: 'fetch portfolio', data: {
           user: id,
           loggedIn: true,
@@ -56,7 +55,7 @@ const App = () => {
         // if a user's portfolio is saved to state, render the portfolio, else, render transaction list
         ? userInfo.portfolio !== null
           ? <>
-            {/* <a href='#' id='transactions' onClick={viewTransactions}>Transactions</a> */}
+            <a href='#' id='transactions' onClick={viewTransactions}>Transactions</a>
             <Portfolio user={userInfo.user} portfolio={userInfo.portfolio} updatePortfolio={handleUserSignedIn}/>
             {/* render module to buy new stocks */}
             <Buy userId={userInfo.user} bal={userInfo.balance} updatePortfolio={handleUserSignedIn}/>

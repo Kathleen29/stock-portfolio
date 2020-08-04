@@ -61,7 +61,7 @@ const Buy = ({ userId, bal, updatePortfolio }) => {
     return (
       <>
       <h2>Cash - ${bal}</h2>
-      <form id="buy-form">
+      <form id="buy-form" className="container">
         <input type="text" id="ticker" placeholder="Ticker" onChange={handleChange} required/>
         <input type="number" id="qty" placeholder="Qty" onChange={handleChange} required/>
         <div className="error">{buyInfo.error}</div>
