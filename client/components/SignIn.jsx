@@ -17,6 +17,13 @@ const SignIn = ({ handleUserSignedIn }) => {
     })
   };
 
+  const handleSignInClick = () => {
+    setLogin({
+      ...loginInfo,
+      view: 'sign-in'
+    })
+  };
+
   // on form change, update state with email and/or password entered
   const handleChange = (event) => {
     setLogin({
@@ -45,21 +52,25 @@ const SignIn = ({ handleUserSignedIn }) => {
   };
 
   return (
-    <div>
+    <div className='signin-container'>
     { (loginInfo.view === "sign-in")
-      ? <div id="sign-in-form">
-          <nav><a href="#" id='signup' onClick={handleSignUpClick}>Sign Up</a></nav>
-          <h2>Sign In</h2>
+      ? <>
+       <nav>
+         <a href="#" id='signin' className='active'>Sign In</a>
+         <a href="#" id='signup' onClick={handleSignUpClick}>Sign Up</a>
+       </nav>
+        <div id="signin-form">
             <form>
               <input type="email" id="email" placeholder="Email" onChange={handleChange}/>
               <br/>
               <input type="password" id="password" placeholder="Password" onChange={handleChange}/>
               <br/>
-              <button onClick={handleSignIn}>Sign In</button>
+              <button className='signin-button' onClick={handleSignIn}>Sign In</button>
           </form>
           <div className="error">{loginInfo.error}</div>
-      </div>
-      : <SignUp handleUserSignedIn={handleUserSignedIn}/>
+        </div>
+      </>
+      : <SignUp handleUserSignedIn={handleUserSignedIn} handleSignInClick={handleSignInClick}/>
     }
     </div>
   );

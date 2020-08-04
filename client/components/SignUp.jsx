@@ -1,11 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 
-const SignUp = ({ handleUserSignedIn }) => {
+const SignUp = ({ handleUserSignedIn, handleSignInClick }) => {
   const [signUpInfo, setSignUpInfo] = useState({
     name: null,
     email: null,
     password: null,
+    passwordMatch: null,
     errors: {}
   });
 
@@ -27,6 +28,11 @@ const SignUp = ({ handleUserSignedIn }) => {
     // checks that password is at least 8 chars long
     if(!signUpInfo.password || signUpInfo.password.length < 8) {
       errors.password = 'Password must be at least 8 characters long';
+      isValid = false;
+    };
+
+    if(signUpInfo.password !== signUpInfo.passwordMatch) {
+      errors.passwordMatch = 'Passwords must match';
       isValid = false;
     };
 
@@ -60,7 +66,7 @@ const SignUp = ({ handleUserSignedIn }) => {
       })
         .then((res) => {
           // render new user's portfolio with new user id
-          handleUserSignedIn(res.data.user_id);
+          handleUserSignedIn(res.data.userId);
         })
         .catch((err) => {
           // if error, email already exists in db
@@ -76,8 +82,10 @@ const SignUp = ({ handleUserSignedIn }) => {
   return (
     // renders sign-up form and any errors in the information entered
     <div className="sign-up-form">
-      {/* <nav><a href="#" id='signin' onClick={handleSignInClick}>Sign In</a></nav> */}
-      <h2>Register</h2>
+      <nav>
+        <a href="#" id='signin' onClick={handleSignInClick}>Sign In</a>
+        <a href="#" id='signup' className='active'>Sign Up</a>
+      </nav>
       <form id="signup-form">
         <input type="text" id="name" placeholder="Name" onChange={handleChange} required/>
         <div className="error">{signUpInfo.errors.name}</div>
@@ -85,6 +93,8 @@ const SignUp = ({ handleUserSignedIn }) => {
         <div className="error">{signUpInfo.errors.email}</div>
         <input type="password" id="password" placeholder="Password" onChange={handleChange} required/>
         <div className="error">{signUpInfo.errors.password}</div>
+        <input type="password" id="passwordMatch" placeholder="Confirm Password" onChange={handleChange} required/>
+        <div className="error">{signUpInfo.errors.passwordMatch}</div>
         <button onClick={handleSignUp}>Sign Up</button>
         <div className="error">{signUpInfo.errors.emailExists}</div>
       </form>
