@@ -5,6 +5,7 @@
 node_modules
 
 # API Key
-
+config.js
 
 # bundle.js
+dist/

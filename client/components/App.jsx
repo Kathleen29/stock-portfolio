@@ -54,16 +54,15 @@ const App = () => {
       {userInfo.loggedIn
         // if a user's portfolio is saved to state, render the portfolio, else, render transaction list
         ? userInfo.portfolio !== null
-          ? <>
-            <a href='#' id='transactions' onClick={viewTransactions}>Transactions</a>
-            <Portfolio user={userInfo.user} portfolio={userInfo.portfolio} updatePortfolio={handleUserSignedIn}/>
+          ? <><div className='container'>
+            <Portfolio user={userInfo.user} portfolio={userInfo.portfolio} updatePortfolio={handleUserSignedIn} viewTransactions={viewTransactions}/>
             {/* render module to buy new stocks */}
+            </div>
             <Buy userId={userInfo.user} bal={userInfo.balance} updatePortfolio={handleUserSignedIn}/>
           </>
-          : <>
-            <a href='#' id='portfolio' onClick={handleUserSignedIn}>Portfolio</a>
-            <Transactions userId={userInfo.user}/>
-          </>
+          : <div className='container'>
+            <Transactions userId={userInfo.user} handleUserSignedIn={handleUserSignedIn} viewTransactions={viewTransactions}/>
+          </div>
         : <SignIn handleUserSignedIn={handleUserSignedIn}/>
       }
     </>

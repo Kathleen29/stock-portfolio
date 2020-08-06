@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
-const Transactions = ({ userId }) => {
+const Transactions = ({ userId, handleUserSignedIn, viewTransactions }) => {
   const [transView, setTransView] = useState({
     view: false,
     transactions: null
@@ -24,8 +24,12 @@ const Transactions = ({ userId }) => {
   // for each transaction, render to the page
   return (
     <div>
+      <nav>
+        <a href='#' id='portfolio' onClick={handleUserSignedIn}>Portfolio</a>
+        <a href='#' id='transactions' className='active' onClick={viewTransactions}>Transactions</a>
+      </nav>
       <h2>Transactions</h2>
-      { (transView.view)
+      { transView.view
       ? <table>
         <tbody>
           { transView.transactions.map(trans => {

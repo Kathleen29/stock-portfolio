@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
-const Portfolio = ({ user, portfolio, updatePortfolio}) => {
+const Portfolio = ({ user, portfolio, updatePortfolio, viewTransactions }) => {
   const [portfolioInfo, setPortfolioInfo] = useState({
     value: 0,
     rows: []
@@ -53,6 +53,10 @@ const Portfolio = ({ user, portfolio, updatePortfolio}) => {
 
   return (
     <div>
+      <nav>
+        <a href='#' id='portfolio' className='active' onClick={updatePortfolio}>Portfolio</a>
+        <a href='#' id='transactions' onClick={viewTransactions}>Transactions</a>
+      </nav>
       <h2>Portfolio (${portfolioInfo.value.toFixed(2)})</h2>
       <table id='portfolio-table'>
         <tbody>

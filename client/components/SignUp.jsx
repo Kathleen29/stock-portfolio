@@ -31,6 +31,11 @@ const SignUp = ({ handleUserSignedIn, handleSignInClick }) => {
       isValid = false;
     };
 
+    if(!signUpInfo.password.match(/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]/)) {
+      errors.password = 'Password must contain at least one letter and one number';
+      isValid = false;
+    };
+
     if(signUpInfo.password !== signUpInfo.passwordMatch) {
       errors.passwordMatch = 'Passwords must match';
       isValid = false;
